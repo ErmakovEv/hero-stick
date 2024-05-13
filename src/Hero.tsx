@@ -7,11 +7,10 @@ type Props = {
 };
 
 function Hero({ size, animated, win }: Props) {
-  const [leftPos, setLeftPos] = useState(3);
+  const [leftPos, setLeftPos] = useState(5);
 
   const drawingTimeoutRef = useRef(0);
   const flagRefWalk = useRef(true);
-  const flagRefWin = useRef(true);
 
   const inlineStyles: React.CSSProperties = {
     position: "absolute",
@@ -22,38 +21,20 @@ function Hero({ size, animated, win }: Props) {
     height: "6%",
   };
 
-  // const uniqueAnimationName1 = 'slideFromLeftYourComponentUnique1';
-
-  // const animationStyles = `
-  //   @keyframes ${uniqueAnimationName1} {
-  //     from { left: 3%; }
-  //     to { left: ${size + 10}%; }
-  //   }
-  // `;
-
-  // const animationStyle: React.CSSProperties = {
-  //   animationName: uniqueAnimationName1,
-  //   animationDuration: '1s',
-  //   animationFillMode: 'forwards',
-  //   animationDelay: '1s, 2s',
-  // };
-
   useEffect(() => {
     const draw = () => {
-      console.log("!!!!");
       drawingTimeoutRef.current = window.setTimeout(() => {
         setLeftPos((pos) => pos + 2);
       }, 30);
     };
 
     const drawWin = () => {
-      console.log("????");
       drawingTimeoutRef.current = window.setTimeout(() => {
         setLeftPos((pos) => pos - 2);
       }, 30);
     };
 
-    if (animated && leftPos < size) {
+    if (animated && leftPos < size + 14) {
       if (flagRefWalk.current) {
         setTimeout(draw, 1000);
         flagRefWalk.current = false;
@@ -62,7 +43,7 @@ function Hero({ size, animated, win }: Props) {
       }
     }
 
-    if (win && leftPos > 3 && !animated) {
+    if (win && leftPos > 5 && !animated) {
       drawWin();
     }
 
@@ -71,16 +52,8 @@ function Hero({ size, animated, win }: Props) {
     };
   }, [animated, leftPos, size, win]);
 
-  // useEffect(() => {
-
-  //   return () => {
-  //     clearTimeout(drawingTimeoutRef.current);
-  //   };
-  // }, [leftPos, win]);
-
   return (
     <>
-      {/* <style>{animationStyles}</style> */}
       <div className="hero-wrapper" style={inlineStyles}>
         <div className="hero">
           <div className="hero-band"></div>

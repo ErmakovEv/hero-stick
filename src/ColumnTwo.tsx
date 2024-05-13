@@ -22,6 +22,7 @@ function ColumnTwo({ width, position, win, start, reset }: Props) {
     right: `${rightPos}%`,
   };
 
+  // 1.4. Первоначальная анимация второй колонны
   useEffect(() => {
     const draw = () => {
       drawingTimeoutRef.current = window.setTimeout(() => {
@@ -38,6 +39,7 @@ function ColumnTwo({ width, position, win, start, reset }: Props) {
     };
   }, [rightPos, position, start]);
 
+  // 5.1. Колонна и героя двигаются в левый край экрана
   useEffect(() => {
     const draw = () => {
       drawingTimeoutRef.current = window.setTimeout(() => {
@@ -55,6 +57,7 @@ function ColumnTwo({ width, position, win, start, reset }: Props) {
     };
   }, [rightPos, width, win]);
 
+  // 1.4.1 Сброс в дефолт положения 2-й колонны
   useEffect(() => {
     if (reset) {
       setRightPos(0);
@@ -63,8 +66,7 @@ function ColumnTwo({ width, position, win, start, reset }: Props) {
 
   return (
     <>
-      {/* <style>{animationStyles}</style> */}
-      <div key={1} className="column-two" style={{ ...inlineStyles }}></div>
+      <div className="column-two" style={inlineStyles}></div>
     </>
   );
 }
