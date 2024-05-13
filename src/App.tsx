@@ -99,7 +99,7 @@ function App() {
 
   const checkSuccess = () => {
     if (
-      sizeBridge + 14 >= 100 - columnTwoPosition - columnTwoWidth &&
+      sizeBridge + 16 >= 100 - columnTwoPosition - columnTwoWidth &&
       sizeBridge + 14 < 100 - columnTwoPosition - 4
     ) {
       setWinRound(true);

@@ -100,7 +100,9 @@ main {
   width: 70%;
   height: auto;
   aspect-ratio: 1 / 1;
-  background-color: #ccc;
+  background-image: url("/bg-dark.png");
+  background-size: cover;
+  background-position: center;
   position: relative;
 }
 
