@@ -1,22 +1,23 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   width: number;
   position: number;
   win: boolean;
+  start: boolean;
+  reset: boolean;
 };
 
-function ColumnTwo({ width, position, win }: Props) {
+function ColumnTwo({ width, position, win, start, reset }: Props) {
   const [rightPos, setRightPos] = useState(0);
-
   const drawingTimeoutRef = useRef(0);
   const flagRef = useRef(true);
 
   const inlineStyles: React.CSSProperties = {
-    position: 'absolute',
-    backgroundColor: 'black',
+    position: "absolute",
+    backgroundColor: "black",
     width: `${width}%`,
-    height: '20%',
+    height: "20%",
     bottom: 0,
     right: `${rightPos}%`,
   };
@@ -28,14 +29,14 @@ function ColumnTwo({ width, position, win }: Props) {
       }, 30);
     };
 
-    if (rightPos < position) {
+    if (start && rightPos < position) {
       draw();
     }
 
     return () => {
       clearTimeout(drawingTimeoutRef.current);
     };
-  }, [rightPos, position]);
+  }, [rightPos, position, start]);
 
   useEffect(() => {
     const draw = () => {
@@ -45,18 +46,20 @@ function ColumnTwo({ width, position, win }: Props) {
     };
 
     if (win && rightPos < 100 - width) {
-      if (flagRef.current) {
-        setTimeout(draw, 3000);
-        flagRef.current = false;
-      } else {
-        draw();
-      }
+      flagRef.current = true;
+      draw();
     }
 
     return () => {
       clearTimeout(drawingTimeoutRef.current);
     };
   }, [rightPos, width, win]);
+
+  useEffect(() => {
+    if (reset) {
+      setRightPos(0);
+    }
+  }, [reset]);
 
   return (
     <>
