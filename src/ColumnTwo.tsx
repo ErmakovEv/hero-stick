@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 type Props = {
   width: number;
@@ -6,18 +6,19 @@ type Props = {
   win: boolean;
   start: boolean;
   reset: boolean;
+  Logo: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 };
 
-function ColumnTwo({ width, position, win, start, reset }: Props) {
+function ColumnTwo({ width, position, win, start, reset, Logo }: Props) {
   const [rightPos, setRightPos] = useState(0);
   const drawingTimeoutRef = useRef(0);
   const flagRef = useRef(true);
 
   const inlineStyles: React.CSSProperties = {
-    position: "absolute",
-    backgroundColor: "black",
+    position: 'absolute',
+    backgroundColor: 'black',
     width: `${width}%`,
-    height: "20%",
+    height: '20%',
     bottom: 0,
     right: `${rightPos}%`,
   };
@@ -66,7 +67,11 @@ function ColumnTwo({ width, position, win, start, reset }: Props) {
 
   return (
     <>
-      <div className="column-two" style={inlineStyles}></div>
+      <div className="column-two" style={inlineStyles}>
+        <div className="column-two__logo">
+          <Logo width={'50%'} height={'50%'} />
+        </div>
+      </div>
     </>
   );
 }

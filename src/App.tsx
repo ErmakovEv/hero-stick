@@ -1,6 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
-import Hero from "./Hero";
-import ColumnTwo from "./ColumnTwo";
+import React, { useEffect, useRef, useState } from 'react';
+import Hero from './Hero';
+import ColumnTwo from './ColumnTwo';
+import Modal from './Modal';
+
+import HTML from './assets/skills-logo/html-svgrepo-com.svg?react';
+import CSS from './assets/skills-logo/css-svgrepo-com.svg?react';
+import JS from './assets/skills-logo/javascript-svgrepo-com.svg?react';
+import REACT from './assets/skills-logo/react-1-logo-svgrepo-com.svg?react';
+import TS from './assets/skills-logo/typescript-svgrepo-com.svg?react';
+import REDUX from './assets/skills-logo/redux-logo-svgrepo-com.svg?react';
 
 /*
 Фазы игры
@@ -26,12 +34,20 @@ import ColumnTwo from "./ColumnTwo";
 7. Если раунд проигран, предложение начать заново и все равно скачать
 */
 
+const SKILLS = [HTML, CSS, JS, REACT, TS, REDUX];
+
 function App() {
+  const [roundCount, setRoundCount] = useState(0);
+
   const [reset, setReset] = useState(false);
   const [startRound, setStartRound] = useState(true);
   const [winRound, setWinRound] = useState(false);
+
   const [isWalk, setIsWalk] = useState(false);
   const [winWalk, setIsWinWalk] = useState(false);
+
+  const [looseRound, setLooseRound] = useState(false);
+  const [isLooseWalk, setIsLooseWalk] = useState(false);
 
   const [columnTwoPosition, setColumnTwoPOsition] = useState<number>(0);
   const [columnTwoWidth, setColumnTwoWidth] = useState(0);
@@ -39,8 +55,13 @@ function App() {
   const [sizeBridge, setSizeBridge] = useState(0);
   const [bridgeRotate, setBridgeRotate] = useState(false);
 
+  const [showWinModal, setShowWinModal] = useState(false);
+
   const drawingTimeoutRef = useRef(0);
   const sizeRef = useRef(false);
+
+  const [imagePosition, setImagePosition] = useState(0);
+  const [startTimeImage, setStartTimeImage] = useState<number | null>(null);
 
   //Фаза 1
   useEffect(() => {
@@ -80,13 +101,26 @@ function App() {
           setIsWinWalk(true);
         }, 3500);
 
-        id2 = window.setTimeout(() => {
-          setBridgeRotate(false); //Статус поворота мостика
-          setSizeBridge(0); // Размер мостика
-          setWinRound(false);
-          setIsWinWalk(false);
-          setStartRound(true);
-        }, 6000);
+        //Фаза 6
+        if (roundCount === SKILLS.length - 1) {
+          id2 = window.setTimeout(() => {
+            setShowWinModal(true);
+          }, 4000);
+        } else {
+          id2 = window.setTimeout(() => {
+            setBridgeRotate(false); //Статус поворота мостика
+            setSizeBridge(0); // Размер мостика
+            setWinRound(false);
+            setIsWinWalk(false);
+            setStartRound(true);
+            setRoundCount((r) => r + 1);
+          }, 6000);
+        }
+      } else if (looseRound) {
+        id1 = window.setTimeout(() => {
+          setIsWalk(false);
+          setIsLooseWalk(true);
+        }, 3500);
       }
     }
 
@@ -95,16 +129,45 @@ function App() {
       clearTimeout(id1);
       clearTimeout(id2);
     };
-  }, [bridgeRotate, winRound]);
+  }, [bridgeRotate, looseRound, roundCount, winRound]);
+
+  useEffect(() => {
+    console.log('requestAnimationFrame');
+    if (winWalk) {
+      let animationFrameId: number;
+      const animate = (timestamp: number) => {
+        if (!startTimeImage) {
+          // Фиксируем стартовое время
+          setStartTimeImage(timestamp);
+        }
+
+        // Прошедшее время в миллисекундах
+        const elapsedTime = timestamp - (startTimeImage ? startTimeImage : 0);
+
+        // Если прошло меньше одной секунды (1000 миллисекунд), продолжаем анимацию
+        if (elapsedTime < 1000) {
+          // Скорость: рассчитываем, чтобы блок прошел 300 пикселей за 1 секунду
+          const distance = 0.2; // пикселей
+          setImagePosition((pos) => pos + (distance * elapsedTime) / 1000); // Расстояние * прошедшее время / время анимации
+          animationFrameId = requestAnimationFrame(animate);
+        }
+      };
+
+      animationFrameId = requestAnimationFrame(animate);
+
+      return () => {
+        cancelAnimationFrame(animationFrameId);
+      };
+    } else {
+      setStartTimeImage(0);
+    }
+  }, [startTimeImage, winWalk]);
 
   const checkSuccess = () => {
-    if (
-      sizeBridge + 16 >= 100 - columnTwoPosition - columnTwoWidth &&
-      sizeBridge + 14 < 100 - columnTwoPosition - 4
-    ) {
+    if (sizeBridge + 16 >= 100 - columnTwoPosition - columnTwoWidth && sizeBridge + 14 < 100 - columnTwoPosition - 4) {
       setWinRound(true);
     } else {
-      setWinRound(false);
+      setLooseRound(true);
     }
   };
 
@@ -132,13 +195,23 @@ function App() {
   };
 
   const bridgeStyle: React.CSSProperties = {
-    content: " ",
-    position: "absolute",
-    width: "1%",
+    content: ' ',
+    position: 'absolute',
+    width: '1%',
     height: `${sizeBridge}%`,
-    backgroundColor: "black",
-    bottom: "19.5%",
-    left: "15%",
+    backgroundColor: 'black',
+    bottom: '19.5%',
+    left: '15%',
+  };
+
+  const gameFieldStyle: React.CSSProperties = {
+    width: '70%',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    backgroundImage: "url('/image1.png')",
+    backgroundSize: 'cover',
+    backgroundPosition: `${imagePosition}% 0`,
+    position: 'relative',
   };
 
   return (
@@ -146,34 +219,39 @@ function App() {
       <header>header</header>
       <main>
         <div className="game">
-          <div className="game-field">
-            <div className="column-one"></div>
+          <div className="game-field" style={gameFieldStyle}>
             <ColumnTwo
               width={columnTwoWidth}
               position={columnTwoPosition}
               win={winWalk}
               start={startRound}
               reset={reset}
+              Logo={SKILLS[roundCount]}
             />
 
-            <Hero size={sizeBridge} animated={isWalk} win={winWalk} />
-            {winWalk ? (
-              <></>
-            ) : (
-              <div
-                className={`bridge ${bridgeRotate ? "rotate" : ""}`}
-                style={bridgeStyle}></div>
+            <Hero size={sizeBridge} animated={isWalk} win={winWalk} loose={isLooseWalk} />
+            {winWalk ? null : (
+              <>
+                <div className={`bridge ${bridgeRotate ? 'rotate' : ''}`} style={bridgeStyle}></div>
+                <div className="column-one"></div>
+              </>
             )}
           </div>
+          {showWinModal ? (
+            <Modal isOpen={showWinModal} onClose={() => setShowWinModal(false)}>
+              <p>Вы победили</p>
+            </Modal>
+          ) : null}
         </div>
         <div className="info">
           {startRound ? (
-            ""
+            ''
           ) : (
             <div
-              style={{ background: "red", display: "inline-block" }}
+              style={{ background: 'red', display: 'inline-block' }}
               onMouseDown={mouseDownHandler}
-              onMouseUp={mouseUpHandler}>
+              onMouseUp={mouseUpHandler}
+            >
               Click
             </div>
           )}

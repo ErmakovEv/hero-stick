@@ -1,24 +1,25 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 type Props = {
   size: number;
   animated: boolean;
   win: boolean;
+  loose: boolean;
 };
 
-function Hero({ size, animated, win }: Props) {
+function Hero({ size, animated, win, loose }: Props) {
   const [leftPos, setLeftPos] = useState(5);
-
+  const [topPos, setTopPos] = useState(73);
   const drawingTimeoutRef = useRef(0);
   const flagRefWalk = useRef(true);
 
   const inlineStyles: React.CSSProperties = {
-    position: "absolute",
-    content: " ",
-    top: "73%",
+    position: 'absolute',
+    content: ' ',
+    top: `${topPos}%`,
     left: `${leftPos}%`,
-    width: "6%",
-    height: "6%",
+    width: '6%',
+    height: '6%',
   };
 
   useEffect(() => {
@@ -31,6 +32,12 @@ function Hero({ size, animated, win }: Props) {
     const drawWin = () => {
       drawingTimeoutRef.current = window.setTimeout(() => {
         setLeftPos((pos) => pos - 2);
+      }, 30);
+    };
+
+    const drawLoose = () => {
+      drawingTimeoutRef.current = window.setTimeout(() => {
+        setTopPos((pos) => pos + 2);
       }, 30);
     };
 
@@ -47,10 +54,14 @@ function Hero({ size, animated, win }: Props) {
       drawWin();
     }
 
+    if (loose && topPos < 92) {
+      drawLoose();
+    }
+
     return () => {
       clearTimeout(drawingTimeoutRef.current);
     };
-  }, [animated, leftPos, size, win]);
+  }, [animated, leftPos, loose, size, topPos, win]);
 
   return (
     <>
