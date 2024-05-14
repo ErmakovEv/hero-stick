@@ -1,14 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Hero from './Hero';
-import ColumnTwo from './ColumnTwo';
-import Modal from './Modal';
+import React, { useEffect, useRef, useState } from "react";
+import Hero from "./Hero";
+import ColumnTwo from "./ColumnTwo";
+import Modal from "./Modal";
 
-import HTML from './assets/skills-logo/html-svgrepo-com.svg?react';
-import CSS from './assets/skills-logo/css-svgrepo-com.svg?react';
-import JS from './assets/skills-logo/javascript-svgrepo-com.svg?react';
-import REACT from './assets/skills-logo/react-1-logo-svgrepo-com.svg?react';
-import TS from './assets/skills-logo/typescript-svgrepo-com.svg?react';
-import REDUX from './assets/skills-logo/redux-logo-svgrepo-com.svg?react';
+import HTML from "./assets/skills-logo/html-svgrepo-com.svg?react";
+import CSS from "./assets/skills-logo/css-svgrepo-com.svg?react";
+import JS from "./assets/skills-logo/javascript-svgrepo-com.svg?react";
+import REACT from "./assets/skills-logo/react-1-logo-svgrepo-com.svg?react";
+import TS from "./assets/skills-logo/typescript-svgrepo-com.svg?react";
+import REDUX from "./assets/skills-logo/redux-logo-svgrepo-com.svg?react";
 
 /*
 Фазы игры
@@ -69,7 +69,7 @@ function App() {
     let id2: number;
 
     if (startRound) {
-      setColumnTwoPOsition(Math.floor(Math.random() * 71)); // Установка значения позиции 2-й колонны
+      setColumnTwoPOsition(Math.floor(Math.random() * 66)); // Установка значения позиции 2-й колонны
       // setColumnTwoWidth(Math.floor(Math.random() * 13) + 8); // Установка ширины 2-й колонны
       setColumnTwoWidth(16); // Установка ширины 2-й колонны
       setReset(true); // Сброс позиции для второй колонны для 2-й колонны
@@ -132,7 +132,6 @@ function App() {
   }, [bridgeRotate, looseRound, roundCount, winRound]);
 
   useEffect(() => {
-    console.log('requestAnimationFrame');
     if (winWalk) {
       let animationFrameId: number;
       const animate = (timestamp: number) => {
@@ -146,7 +145,7 @@ function App() {
 
         // Если прошло меньше одной секунды (1000 миллисекунд), продолжаем анимацию
         if (elapsedTime < 1000) {
-          // Скорость: рассчитываем, чтобы блок прошел 300 пикселей за 1 секунду
+          // Скорость: рассчитываем, чтобы блок прошел 0.2% за 1 секунду
           const distance = 0.2; // пикселей
           setImagePosition((pos) => pos + (distance * elapsedTime) / 1000); // Расстояние * прошедшее время / время анимации
           animationFrameId = requestAnimationFrame(animate);
@@ -164,7 +163,10 @@ function App() {
   }, [startTimeImage, winWalk]);
 
   const checkSuccess = () => {
-    if (sizeBridge + 16 >= 100 - columnTwoPosition - columnTwoWidth && sizeBridge + 14 < 100 - columnTwoPosition - 4) {
+    if (
+      sizeBridge + 16 >= 100 - columnTwoPosition - columnTwoWidth &&
+      sizeBridge + 14 < 100 - columnTwoPosition - 4
+    ) {
       setWinRound(true);
     } else {
       setLooseRound(true);
@@ -195,23 +197,23 @@ function App() {
   };
 
   const bridgeStyle: React.CSSProperties = {
-    content: ' ',
-    position: 'absolute',
-    width: '1%',
+    content: " ",
+    position: "absolute",
+    width: "1%",
     height: `${sizeBridge}%`,
-    backgroundColor: 'black',
-    bottom: '19.5%',
-    left: '15%',
+    backgroundColor: "black",
+    bottom: "19.5%",
+    left: "15%",
   };
 
   const gameFieldStyle: React.CSSProperties = {
-    width: '70%',
-    height: 'auto',
-    aspectRatio: '1 / 1',
+    width: "100%",
+    height: "auto",
+    aspectRatio: "1 / 1",
     backgroundImage: "url('/image1.png')",
-    backgroundSize: 'cover',
+    backgroundSize: "cover",
     backgroundPosition: `${imagePosition}% 0`,
-    position: 'relative',
+    position: "relative",
   };
 
   return (
@@ -219,24 +221,34 @@ function App() {
       <header>header</header>
       <main>
         <div className="game">
-          <div className="game-field" style={gameFieldStyle}>
-            <ColumnTwo
-              width={columnTwoWidth}
-              position={columnTwoPosition}
-              win={winWalk}
-              start={startRound}
-              reset={reset}
-              Logo={SKILLS[roundCount]}
-            />
+          <div className="game-field-wrapper">
+            <div className="game-field" style={gameFieldStyle}>
+              <ColumnTwo
+                width={columnTwoWidth}
+                position={columnTwoPosition}
+                win={winWalk}
+                start={startRound}
+                reset={reset}
+                Logo={SKILLS[roundCount]}
+              />
 
-            <Hero size={sizeBridge} animated={isWalk} win={winWalk} loose={isLooseWalk} />
-            {winWalk ? null : (
-              <>
-                <div className={`bridge ${bridgeRotate ? 'rotate' : ''}`} style={bridgeStyle}></div>
-                <div className="column-one"></div>
-              </>
-            )}
+              <Hero
+                size={sizeBridge}
+                animated={isWalk}
+                win={winWalk}
+                loose={isLooseWalk}
+              />
+              {winWalk ? null : (
+                <>
+                  <div
+                    className={`bridge ${bridgeRotate ? "rotate" : ""}`}
+                    style={bridgeStyle}></div>
+                  <div className="column-one"></div>
+                </>
+              )}
+            </div>
           </div>
+
           {showWinModal ? (
             <Modal isOpen={showWinModal} onClose={() => setShowWinModal(false)}>
               <p>Вы победили</p>
@@ -245,13 +257,12 @@ function App() {
         </div>
         <div className="info">
           {startRound ? (
-            ''
+            ""
           ) : (
             <div
-              style={{ background: 'red', display: 'inline-block' }}
+              style={{ background: "red", display: "inline-block" }}
               onMouseDown={mouseDownHandler}
-              onMouseUp={mouseUpHandler}
-            >
+              onMouseUp={mouseUpHandler}>
               Click
             </div>
           )}

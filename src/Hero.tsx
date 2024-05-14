@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   size: number;
@@ -10,56 +10,64 @@ type Props = {
 function Hero({ size, animated, win, loose }: Props) {
   const [leftPos, setLeftPos] = useState(5);
   const [topPos, setTopPos] = useState(73);
-  const drawingTimeoutRef = useRef(0);
+
   const flagRefWalk = useRef(true);
+  const animationFrameRef = useRef<number | null>(null);
 
   const inlineStyles: React.CSSProperties = {
-    position: 'absolute',
-    content: ' ',
+    position: "absolute",
+    content: " ",
     top: `${topPos}%`,
     left: `${leftPos}%`,
-    width: '6%',
-    height: '6%',
+    width: "6%",
+    height: "6%",
   };
 
   useEffect(() => {
     const draw = () => {
-      drawingTimeoutRef.current = window.setTimeout(() => {
+      if (leftPos < size + 14) {
         setLeftPos((pos) => pos + 2);
-      }, 30);
-    };
-
-    const drawWin = () => {
-      drawingTimeoutRef.current = window.setTimeout(() => {
-        setLeftPos((pos) => pos - 2);
-      }, 30);
+        animationFrameRef.current = requestAnimationFrame(draw);
+      }
     };
 
     const drawLoose = () => {
-      drawingTimeoutRef.current = window.setTimeout(() => {
+      if (topPos < 92) {
         setTopPos((pos) => pos + 2);
-      }, 30);
+        animationFrameRef.current = requestAnimationFrame(drawLoose);
+      }
     };
 
-    if (animated && leftPos < size + 14) {
+    const drawWin = () => {
+      if (leftPos > 5) {
+        setLeftPos((pos) => pos - 2);
+        animationFrameRef.current = requestAnimationFrame(drawWin);
+      }
+    };
+
+    if (animated) {
       if (flagRefWalk.current) {
-        setTimeout(draw, 1000);
+        setTimeout(() => {
+          animationFrameRef.current = requestAnimationFrame(draw);
+        }, 1000);
         flagRefWalk.current = false;
       } else {
-        draw();
+        animationFrameRef.current = requestAnimationFrame(draw);
       }
     }
 
-    if (win && leftPos > 5 && !animated) {
-      drawWin();
+    if (win) {
+      animationFrameRef.current = requestAnimationFrame(drawWin);
     }
 
-    if (loose && topPos < 92) {
-      drawLoose();
+    if (loose) {
+      animationFrameRef.current = requestAnimationFrame(drawLoose);
     }
 
     return () => {
-      clearTimeout(drawingTimeoutRef.current);
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
     };
   }, [animated, leftPos, loose, size, topPos, win]);
 

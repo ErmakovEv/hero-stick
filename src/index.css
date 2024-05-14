@@ -97,15 +97,15 @@ main {
   background-color: rgb(223, 231, 172);
 }
 
-/* .game-field {
+.game-field-wrapper {
   width: 70%;
   height: auto;
   aspect-ratio: 1 / 1;
-  background-image: url('/bg-dark.png');
+  /* background-image: url('/bg-dark.png');
   background-size: contain;
-  background-position: center;
+  background-position: center; */
   position: relative;
-} */
+}
 
 @media screen and (max-width: 600px) {
   main {
@@ -124,7 +124,7 @@ main {
 }
 
 @media screen and (min-width: 1280px) {
-  .game-field {
+  .game-field-wrapper {
     width: 640px;
   }
 }
@@ -139,7 +139,7 @@ main {
 }
 
 .hero {
-  content: ' ';
+  content: " ";
   position: absolute;
   background-color: black;
   border-radius: 5px;
@@ -151,7 +151,7 @@ main {
 }
 
 .hero::after {
-  content: ' ';
+  content: " ";
   position: absolute;
   border-radius: 50%;
   bottom: -20%;
@@ -163,7 +163,7 @@ main {
 }
 
 .hero::before {
-  content: ' ';
+  content: " ";
   position: absolute;
   border-radius: 50%;
   bottom: -20%;
@@ -175,7 +175,7 @@ main {
 }
 
 .hero-band {
-  content: ' ';
+  content: " ";
   position: absolute;
   top: 20%;
   left: -10%;
@@ -185,7 +185,7 @@ main {
 }
 
 .hero-eye {
-  content: ' ';
+  content: " ";
   position: absolute;
   top: 25%;
   left: calc(100% - 25%);
