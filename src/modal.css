@@ -1,5 +1,5 @@
 .modal-overlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -8,21 +8,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000; /* Высокий z-index, чтобы модальное окно было над другими элементами */
+  z-index: 1000;
 }
 
 .modal {
-  background: white;
-  padding: 20px;
-  border-radius: 5px;
+  background: var(--background-color);
+  border: 1px solid var(--text-main-color);
+
+  width: 50%;
+  height: 25%;
   position: relative;
-  /* z-index: 1001; z-index выше, чем у overlay, чтобы быть над ним */
+  z-index: 1001;
 }
 
 .modal-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  position: relative;
+  color: var(--text-secondary-color);
+  left: 0;
   border: none;
   background: none;
   font-size: 20px;

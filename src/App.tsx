@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Hero from "./Hero";
 import ColumnTwo from "./ColumnTwo";
 import Modal from "./Modal";
+import ModalContentWin from "./ModalContentWin";
 
 import HTML from "./assets/skills-logo/html-svgrepo-com.svg?react";
 import CSS from "./assets/skills-logo/css-svgrepo-com.svg?react";
@@ -37,7 +38,7 @@ import REDUX from "./assets/skills-logo/redux-logo-svgrepo-com.svg?react";
 const SKILLS = [HTML, CSS, JS, REACT, TS, REDUX];
 
 function App() {
-  const [roundCount, setRoundCount] = useState(0);
+  const [roundCount, setRoundCount] = useState(5);
 
   const [reset, setReset] = useState(false);
   const [startRound, setStartRound] = useState(true);
@@ -55,7 +56,8 @@ function App() {
   const [sizeBridge, setSizeBridge] = useState(0);
   const [bridgeRotate, setBridgeRotate] = useState(false);
 
-  const [showWinModal, setShowWinModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [statusModal, setStatusModal] = useState<"winner" | "looser">("winner");
 
   const drawingTimeoutRef = useRef(0);
   const sizeRef = useRef(false);
@@ -104,7 +106,8 @@ function App() {
         //Фаза 6
         if (roundCount === SKILLS.length - 1) {
           id2 = window.setTimeout(() => {
-            setShowWinModal(true);
+            setShowModal(true);
+            setStatusModal("winner");
           }, 4000);
         } else {
           id2 = window.setTimeout(() => {
@@ -121,6 +124,11 @@ function App() {
           setIsWalk(false);
           setIsLooseWalk(true);
         }, 3500);
+
+        id2 = window.setTimeout(() => {
+          setShowModal(true);
+          setStatusModal("looser");
+        }, 4000);
       }
     }
 
@@ -201,7 +209,7 @@ function App() {
     position: "absolute",
     width: "1%",
     height: `${sizeBridge}%`,
-    backgroundColor: "black",
+    backgroundColor: "#1b0a30",
     bottom: "19.5%",
     left: "15%",
   };
@@ -247,13 +255,16 @@ function App() {
                 </>
               )}
             </div>
+            {showModal ? (
+              <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+                {statusModal === "winner" ? (
+                  <ModalContentWin />
+                ) : (
+                  <p>Вы проиграли</p>
+                )}
+              </Modal>
+            ) : null}
           </div>
-
-          {showWinModal ? (
-            <Modal isOpen={showWinModal} onClose={() => setShowWinModal(false)}>
-              <p>Вы победили</p>
-            </Modal>
-          ) : null}
         </div>
         <div className="info">
           {startRound ? (

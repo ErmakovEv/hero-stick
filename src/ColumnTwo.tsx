@@ -15,7 +15,7 @@ function ColumnTwo({ width, position, win, start, reset, Logo }: Props) {
 
   const inlineStyles: React.CSSProperties = {
     position: "absolute",
-    backgroundColor: "black",
+    backgroundColor: "#1b0a30",
     width: `${width}%`,
     height: "20%",
     bottom: 0,
