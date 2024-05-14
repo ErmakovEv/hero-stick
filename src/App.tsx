@@ -38,7 +38,7 @@ import REDUX from "./assets/skills-logo/redux-logo-svgrepo-com.svg?react";
 const SKILLS = [HTML, CSS, JS, REACT, TS, REDUX];
 
 function App() {
-  const [roundCount, setRoundCount] = useState(5);
+  const [roundCount, setRoundCount] = useState(0);
 
   const [reset, setReset] = useState(false);
   const [startRound, setStartRound] = useState(true);
