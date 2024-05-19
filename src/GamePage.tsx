@@ -3,6 +3,7 @@ import Hero from './Hero';
 import ColumnTwo from './ColumnTwo';
 import Modal from './Modal';
 import ModalContentWin from './ModalContentWin';
+import ModalContentLoose from './ModalContentLoose';
 import SKILLS from './Utils';
 
 /*
@@ -30,13 +31,11 @@ import SKILLS from './Utils';
 */
 
 type Props = {
-  startGame: () => void;
   endGame: () => void;
+  downloadCv: () => void;
 };
 
-function Game({ startGame, endGame }: Props) {
-  console.log(startGame, endGame);
-
+function Game({ endGame, downloadCv }: Props) {
   const [roundCount, setRoundCount] = useState(0);
 
   const [reset, setReset] = useState(false);
@@ -220,6 +219,11 @@ function Game({ startGame, endGame }: Props) {
     position: 'relative',
   };
 
+  const handleEndGame = () => {
+    downloadCv();
+    endGame();
+  };
+
   return (
     <div className="game">
       <div className="game-field-wrapper">
@@ -242,22 +246,31 @@ function Game({ startGame, endGame }: Props) {
           )}
         </div>
         {showModal ? (
-          <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-            {statusModal === 'winner' ? <ModalContentWin /> : <p>Вы проиграли</p>}
+          <Modal
+            isOpen={showModal}
+            onClose={() => {
+              setShowModal(false);
+              endGame();
+            }}
+          >
+            {statusModal === 'winner' ? (
+              <ModalContentWin cb={handleEndGame} />
+            ) : (
+              <ModalContentLoose cb={handleEndGame} />
+            )}
           </Modal>
         ) : null}
       </div>
-      {startRound ? (
-        ''
-      ) : (
-        <div
-          style={{ background: 'red', display: 'inline-block' }}
-          onMouseDown={mouseDownHandler}
-          onMouseUp={mouseUpHandler}
-        >
-          Click
-        </div>
-      )}
+      <div
+        className="home__button fun"
+        style={{ opacity: `${startRound ? 0 : 1}` }}
+        onMouseDown={mouseDownHandler}
+        onMouseUp={mouseUpHandler}
+        onTouchStart={mouseDownHandler}
+        onTouchEnd={mouseUpHandler}
+      >
+        Click
+      </div>
     </div>
   );
 }

@@ -1,20 +1,12 @@
 import { TypeAnimation } from 'react-type-animation';
+import Button from './Button';
 
 type Props = {
   startGame: () => void;
+  downloadCv: () => void;
 };
 
-function About({ startGame }: Props) {
-  const handleDownload = () => {
-    const cvUrl = '/cv.pdf';
-    const link = document.createElement('a');
-    link.href = cvUrl;
-    link.download = 'cv.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
+function About({ startGame, downloadCv }: Props) {
   return (
     <div className="game">
       <div className="home">
@@ -37,12 +29,12 @@ function About({ startGame }: Props) {
               />
             </div>
             <div className="home__buttons">
-              <div className="home__button home__button-fun" onClick={startGame}>
-                Скачать резюме ВЕСЕЛО
-              </div>
-              <div className="home__button" onClick={handleDownload}>
-                Скачать резюме СКУЧНО
-              </div>
+              <Button cb={startGame} active={true}>
+                <p>Скачать резюме ВЕСЕЛО</p>
+              </Button>
+              <Button cb={downloadCv} active={false}>
+                <p>Скачать резюме СКУЧНО</p>
+              </Button>
             </div>
           </div>
           <div className="home__hello-avatar"></div>

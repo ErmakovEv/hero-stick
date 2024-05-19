@@ -1,11 +1,9 @@
 import { FreeMode, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import p1 from './assets/projects/p1.png';
-import p2 from './assets/projects/p2.png';
-import p3 from './assets/projects/p3.png';
 
-const ITEMS = [p1, p2, p3];
+import { FaCode, FaEye } from 'react-icons/fa6';
 
+import { PROJECTS } from './Utils';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/free-mode';
@@ -17,10 +15,10 @@ const getStyles = (src: string) => ({
   aspectRatio: '1 / 1',
   // background: 'red',
   backgroundImage: `url(${src})`,
-  backgroundSize: 'contain',
+  backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
-  borderRadius: '2%',
+  borderRadius: '10px',
 });
 
 function MySlider() {
@@ -36,10 +34,18 @@ function MySlider() {
         onSwiper={(swiper) => console.log(swiper)}
         onSlideChange={() => console.log('slide change')}
       >
-        {ITEMS.map((item) => (
-          <SwiperSlide className="slider-item" key={item}>
+        {PROJECTS.map((item) => (
+          <SwiperSlide className="slider-item" key={item.img}>
             <div className="slider-item-image-wrapper">
-              <div className="slider-item-image" style={getStyles(item)}></div>
+              <div className="slider-item-image" style={getStyles(item.img)}></div>
+              <div className="slider-item-image-overlay">
+                <a href={`${item.code}`} target="_blank">
+                  <FaCode size={25} />
+                </a>
+                <a href={`${item.deploy}`} target="_blank">
+                  <FaEye size={25} />
+                </a>
+              </div>
             </div>
           </SwiperSlide>
         ))}

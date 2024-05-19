@@ -9,9 +9,23 @@ function MainPage() {
   const handleStart = () => setIsGame(true);
   const handleEnd = () => setIsGame(false);
 
+  const handleDownload = () => {
+    const cvUrl = '/cv.pdf';
+    const link = document.createElement('a');
+    link.href = cvUrl;
+    link.download = 'cv.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="game-page">
-      {isGame ? <Game startGame={handleStart} endGame={handleEnd} /> : <About startGame={handleStart} />}
+      {isGame ? (
+        <Game endGame={handleEnd} downloadCv={handleDownload} />
+      ) : (
+        <About downloadCv={handleDownload} startGame={handleStart} />
+      )}
       <Info />
     </div>
   );
