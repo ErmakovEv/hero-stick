@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 type Props = {
   width: number;
@@ -14,10 +14,10 @@ function ColumnTwo({ width, position, win, start, reset, Logo }: Props) {
   const animationFrameRef = useRef<number | null>(null);
 
   const inlineStyles: React.CSSProperties = {
-    position: "absolute",
-    backgroundColor: "#1b0a30",
+    position: 'absolute',
+    backgroundColor: '#1b0a30',
     width: `${width}%`,
-    height: "20%",
+    height: '20%',
     bottom: 0,
     right: `${rightPos}%`,
   };
@@ -73,7 +73,7 @@ function ColumnTwo({ width, position, win, start, reset, Logo }: Props) {
     <>
       <div className="column-two" style={inlineStyles}>
         <div className="column-two__logo">
-          <Logo width={"50%"} height={"50%"} />
+          <Logo width={'50%'} height={'50%'} />
         </div>
       </div>
     </>

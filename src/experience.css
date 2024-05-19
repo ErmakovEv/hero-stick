@@ -1,0 +1,28 @@
+.info-experience {
+  color: var(--text-secondary-color);
+  display: grid;
+}
+
+.info-experience-main-title,
+.info-experience-header {
+  color: var(--text-main-color);
+  text-align: center;
+}
+
+.info-experience-header {
+  display: flex;
+}
+
+.info-experience-title {
+  margin-left: 2%;
+}
+
+.info-experience-description {
+  font-size: 12px;
+  text-align: justify;
+}
+
+.info-experience-contacts-description {
+  display: flex;
+  justify-content: space-between;
+}
