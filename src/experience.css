@@ -26,3 +26,17 @@
   display: flex;
   justify-content: space-between;
 }
+
+.info-experience-contacts-description input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.contacts-img {
+  transition: fill 0.3s ease;
+}
+
+.contacts-img:hover {
+  fill: var(--text-main-color);
+}

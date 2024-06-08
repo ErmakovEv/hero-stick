@@ -54,7 +54,7 @@ import p3 from './assets/projects/p3.png';
 const project1 = {
   img: p1,
   code: 'https://github.com/ErmakovEv/flight-radar-react',
-  deploy: 'https://ermakov-evgeny.ru/',
+  deploy: 'https://flight.ermakov-evgeny.ru/',
 };
 
 const project2 = {
